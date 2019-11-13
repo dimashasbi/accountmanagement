@@ -1,8 +1,8 @@
 package postgres
 
 import (
-	"M-GateDBConfig/engine"
-	"M-GateDBConfig/model"
+	"AccountManagement/engine"
+	"AccountManagement/model"
 	"fmt"
 
 	"github.com/jinzhu/gorm"
@@ -42,12 +42,8 @@ func NewStorage(data model.DBConfigurationModel) engine.StorageFactory {
 
 }
 
-func (c *storageFactory) NewParameterRepository() engine.ParameterRepository {
-	return newParameterRepository(c.db)
-}
-
-func (c *storageFactory) NewSystemSettingRespository() engine.SystemSettingsRepository {
-	return newSystemSettingsRepository(c.db)
+func (c *storageFactory) NewUsersRespository() engine.UsersRepository {
+	return newUsersRepository(c.db)
 }
 
 // dbsetIndex to Set Index

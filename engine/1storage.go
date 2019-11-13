@@ -1,10 +1,16 @@
 package engine
 
+import (
+	"AccountManagement/model"
+)
+
 type (
-	// SystemSettingsRepository defines the methods that any
+	// UsersRepository defines the methods that any
 	// data storage provider needs to implement to get
 	// and store greetings
 	UsersRepository interface {
+		Insert(k *model.Users) error
+		Select(k *model.Users) (*model.Users, error)
 	}
 
 	// StorageFactory is the interface that a storage

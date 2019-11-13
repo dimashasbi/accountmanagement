@@ -1,7 +1,7 @@
 package fileconfig
 
 import (
-	"M-GateDBConfig/model"
+	"AccountManagement/model"
 	"strconv"
 
 	"github.com/spf13/viper"
