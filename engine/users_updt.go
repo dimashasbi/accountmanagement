@@ -8,19 +8,19 @@ import (
 )
 
 type (
-	// AddUserReq for Request Create users
-	AddUserReq struct {
+	// UpdtUserReq for Request Update users
+	UpdtUserReq struct {
 		ID           string
 		UserName     *string
 		Password     *string
 		UserFullname *string
-		RoleID       *int
 		Email        *string
 	}
 )
 
-func (s *users) AddUsers(h *AddUserReq) *UsersDefaultResp {
-	check := s.checkTagaddUser(h)
+// UpdateUsers use for change value of password, userfullname, email,
+func (s *users) UpdateUsers(h *UpdtUserReq) *UsersDefaultResp {
+	check := s.checkTagupdUser(h)
 	if check != "" {
 		return &UsersDefaultResp{
 			ID:    h.ID,
@@ -36,18 +36,18 @@ func (s *users) AddUsers(h *AddUserReq) *UsersDefaultResp {
 		encrPass,
 		*h.UserFullname,
 		*h.Email,
-		*h.RoleID,
+		0,
 		0, // login fail count
-		time.Now(),
+		time.Time{},
 		true, // active
 	)
-	err := s.repository.Insert(usermod)
+	err := s.repository.UpdateAll(usermod)
 	if err != nil {
 		fmt.Printf("%+v", err)
 
 		return &UsersDefaultResp{
-			ID:    h.ID,
-			Error: "Error input to Users Table",
+			ID:    string(h.ID),
+			Error: "Error Update Users Table",
 		}
 	}
 
@@ -57,7 +57,7 @@ func (s *users) AddUsers(h *AddUserReq) *UsersDefaultResp {
 	}
 }
 
-func (s *users) checkTagaddUser(h *AddUserReq) string {
+func (s *users) checkTagupdUser(h *UpdtUserReq) string {
 
 	if h.UserName == nil || *h.UserName == "" {
 		return "Tag UserName is missing or empty "
@@ -71,13 +71,8 @@ func (s *users) checkTagaddUser(h *AddUserReq) string {
 		return "Tag Password is missing "
 	}
 
-	if h.RoleID == nil || *h.RoleID == 0 {
-		return "Tag RoleID is missing or empty "
-	}
-
 	if h.Email == nil {
 		return "Tag Email is missing "
 	}
-
 	return ""
 }

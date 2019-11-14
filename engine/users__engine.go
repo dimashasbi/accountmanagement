@@ -5,11 +5,11 @@ import (
 )
 
 type (
-	// Users is the interface for interactor
+	// Users is the interface for interactor and this is Use Case
 	Users interface {
 		AddUsers(h *AddUserReq) *UsersDefaultResp
-		// UpdateUsers()
-		// DeleteUsers()
+		UpdateUsers(h *UpdtUserReq) *UsersDefaultResp
+		DeleteUsers(h *SelectUserReq) *UsersDefaultResp
 		SelectUsers(h *SelectUserReq) *SelectUserResp
 	}
 
@@ -38,24 +38,33 @@ func (f *engineFactory) NewUsersEngine() Users {
 	return repostruc
 }
 
+// InitializationUsers create new default users administrator if not exist
 func (s users) InitializationUsers() {
 	// create new default users administrator if not exist
+
+	// Default Admin
+	UserName := "adminSkywalker"
+	Password := "jaquest"
+	UserFullName := "Dota MMR nya cuma 4k, Ancient"
+	RoleID := 1
+	Email := "dimashasbi.habibi@gmail.com"
+
 	firstUser := SelectUserReq{
 		ID:       "0",
-		UserName: "adminSkywalker",
+		UserName: &UserName,
 	}
 	val := s.SelectUsers(&firstUser)
-	if val.Error != "" || !val.Active && val.UserName == "adminSkywalker" {
+	if val.Error != "" || !val.Active && val.UserName == UserName {
 		// no users = no data record = error
 		// no rows = val.active is false and role ID is 0
-		// lets Add Users
+
 		inp := &AddUserReq{
 			ID:           "0",
 			UserName:     firstUser.UserName,
-			Password:     "jaquest",
-			UserFullname: "Dota MMR nya cuma 4k, Ancient",
-			RoleID:       1,
-			Email:        "dimashasbi.habibi@gmail.com",
+			Password:     &Password,
+			UserFullname: &UserFullName,
+			RoleID:       &RoleID,
+			Email:        &Email,
 		}
 		sil := s.AddUsers(inp)
 		if sil.Error != "" {

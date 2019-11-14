@@ -11,7 +11,7 @@ type (
 	// SelectUserReq for request select User
 	SelectUserReq struct {
 		ID       string
-		UserName string
+		UserName *string
 	}
 
 	// SelectUserResp for respond select User
@@ -28,14 +28,23 @@ type (
 )
 
 func (s users) SelectUsers(h *SelectUserReq) *SelectUserResp {
+
+	check := s.checkTagselUser(h)
+	if check != "" {
+		return &SelectUserResp{
+			ID:    h.ID,
+			Error: check,
+		}
+	}
+
 	usermod := model.NewUsers(
-		h.UserName,
+		*h.UserName,
 		"",
 		"",
 		"",
 		0,
 		0, // login fail count
-		time.Now(),
+		time.Time{},
 		false, // active
 	)
 	sult, err := s.repository.Select(usermod)
@@ -49,7 +58,7 @@ func (s users) SelectUsers(h *SelectUserReq) *SelectUserResp {
 		}
 		return &SelectUserResp{
 			ID:       h.ID,
-			UserName: h.UserName,
+			UserName: *h.UserName,
 			Error:    "Error Select to Table Users",
 		}
 	}
@@ -63,4 +72,12 @@ func (s users) SelectUsers(h *SelectUserReq) *SelectUserResp {
 		Active:         sult.Active,
 		Error:          "",
 	}
+}
+
+func (s *users) checkTagselUser(h *SelectUserReq) string {
+
+	if h.UserName == nil || *h.UserName == "" {
+		return "Tag UserName is missing or empty "
+	}
+	return ""
 }

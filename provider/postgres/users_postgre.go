@@ -33,3 +33,27 @@ func (s usersRepository) Select(k *model.Users) (*model.Users, error) {
 	}
 	return k, nil
 }
+
+func (s usersRepository) UpdateAll(m *model.Users) error {
+	// update map
+	maps := map[string]interface{}{
+		"password":       m.Password,
+		"user_full_name": m.UserFullName,
+		"email":          m.Email,
+		"role_id":        m.RoleID,
+		"activated":      m.Active,
+	}
+	result := s.session.Model(&m).Where("user_name = ?", m.UserName).Update(maps)
+	if result.Error != nil {
+		return errors.Errorf("Error Update Users : %v", result.Error)
+	}
+	return nil
+}
+
+func (s usersRepository) Remove(m *model.Users) error {
+	result := s.session.Where("KEY = ?", m.UserName).Delete(&m)
+	if result.Error != nil {
+		return errors.Errorf("Error Delete a Users : %v", result.Error)
+	}
+	return nil
+}

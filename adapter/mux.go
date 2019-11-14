@@ -27,7 +27,25 @@ func (a *Handler) InitializeServer(f engine.EnginesFactory) {
 
 // SetURL for reloading
 func (a *Handler) SetURL() {
+	a.POST("/adduser", a.AddUser)
+	a.POST("/seluser", a.SelectUser)
+	a.POST("/updtuser", a.UpdateUser)
 
+}
+
+// AddUser for  Users Mux
+func (a *Handler) AddUser(w http.ResponseWriter, r *http.Request) {
+	a.muxUsers.AddUser(w, r)
+}
+
+// SelectUser for  Users Mux
+func (a *Handler) SelectUser(w http.ResponseWriter, r *http.Request) {
+	a.muxUsers.SelectUser(w, r)
+}
+
+// UpdateUser for  Users Mux
+func (a *Handler) UpdateUser(w http.ResponseWriter, r *http.Request) {
+	a.muxUsers.UpdateUser(w, r)
 }
 
 // GET wraps the router for GET method
