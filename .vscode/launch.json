@@ -10,7 +10,7 @@
             "request": "launch",
             "mode": "auto",
             // "program": "${fileDirname}",
-            "program": "${workspaceFolder}/main_accmng.go",
+            "program": "${workspaceFolder}/app/main_accmng.go",
             "env": {},
             "args": []
         }

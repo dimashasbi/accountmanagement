@@ -2,7 +2,7 @@ package main
 
 import (
 	"AccountManagement/adapter"
-	"AccountManagement/app/fileconfig"
+	"AccountManagement/provider/fileconfig"
 	"AccountManagement/engine"
 
 	"AccountManagement/provider/postgres"

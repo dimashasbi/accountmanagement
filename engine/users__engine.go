@@ -7,6 +7,7 @@ import (
 type (
 	// Users is the interface for interactor and this is Use Case
 	Users interface {
+		InitializationUsers()
 		AddUsers(h *AddUserReq) *UsersDefaultResp
 		UpdateUsers(h *UpdtUserReq) *UsersDefaultResp
 		DeleteUsers(h *SelectUserReq) *UsersDefaultResp
